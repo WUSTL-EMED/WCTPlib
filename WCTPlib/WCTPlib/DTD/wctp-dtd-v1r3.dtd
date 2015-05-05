@@ -1,0 +1,568 @@
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- file-url='http://dtd.wctp.org/wctp-dtd-v1r3.dtd' -->
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- Wireless Communication Transfer Protocol (WCTP)                  -->
+
+<!-- ============================= -->
+<!-- Declaration of wctp-Operation -->
+<!-- ============================= -->
+
+<!ELEMENT wctp-Operation            ( wctp-ClientQuery
+                                    | wctp-ClientQueryResponse
+                                    | wctp-Confirmation
+                                    | wctp-LookupSubscriber
+                                    | wctp-LookupResponse
+                                    | wctp-DeviceLocation
+                                    | wctp-DeviceLocationResponse
+                                    | wctp-MessageReply
+                                    | wctp-PollForMessages 
+                                    | wctp-PollResponse
+                                    | wctp-ReturnToSvc
+                                    | wctp-SendMsgMulti
+                                    | wctp-SendMsgMultiResponse
+                                    | wctp-StatusInfo
+                                    | wctp-SubmitClientMessage
+                                    | wctp-SubmitClientResponse
+                                    | wctp-SubmitRequest
+                                    | wctp-VersionQuery
+                                    | wctp-VersionResponse
+                                    ) >
+
+<!ATTLIST wctp-Operation          
+          wctpVersion               CDATA  #REQUIRED
+          wctpToken                 CDATA  #IMPLIED
+                                    >
+
+<!-- =============================== -->
+<!-- Declaration of wctp-ClientQuery -->
+<!-- =============================== -->
+
+<!ELEMENT wctp-ClientQuery          EMPTY
+                                    >
+
+<!ATTLIST wctp-ClientQuery
+          senderID                  CDATA  #REQUIRED
+          recipientID               CDATA  #REQUIRED
+          trackingNumber            CDATA  #REQUIRED
+                                    >
+
+<!-- ======================================= -->
+<!-- Declaration of wctp-ClientQueryResponse -->
+<!-- ======================================= -->
+
+<!ELEMENT wctp-ClientQueryResponse  ( wctp-ClientMessage+
+                                    | wctp-NoMessages
+                                    | wctp-Failure
+                                    ) >
+<!ATTLIST wctp-ClientQueryResponse
+          minNextPollInterval       CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-ClientMessage        ( wctp-ClientMessageReply
+                                    | wctp-ClientStatusInfo
+                                    ) >
+
+<!ELEMENT wctp-ClientMessageReply   ( wctp-ClientResponseHeader
+                                    , wctp-Payload
+                                    ) >
+
+<!ATTLIST wctp-ClientMessageReply   
+          MCRMessageReply           ( true | false ) "false"
+                                    >
+
+<!ELEMENT wctp-ClientStatusInfo     ( wctp-ClientResponseHeader
+                                    , ( wctp-Failure
+                                      | wctp-Notification )
+                                    ) >
+
+<!ELEMENT wctp-ClientResponseHeader ( wctp-Originator
+                                    , wctp-Recipient
+                                    ) >
+
+<!ATTLIST wctp-ClientResponseHeader 
+          responseTimestamp         CDATA  #IMPLIED
+          respondingToTimestamp     CDATA  #IMPLIED
+                                    >
+
+<!-- ================================  -->
+<!-- Declaration of wctp-Confirmation  -->
+<!-- ================================  -->
+
+<!ELEMENT wctp-Confirmation         ( wctp-Failure
+                                    | wctp-Success
+                                    ) >
+
+<!ELEMENT wctp-Success              ( #PCDATA )
+                                    >
+
+<!ATTLIST wctp-Success
+          successCode               CDATA  #REQUIRED
+          successText               CDATA  #IMPLIED
+                                    >
+
+<!-- ==================================== -->
+<!-- Declaration of wctp-LookupSubscriber -->
+<!-- ==================================== -->
+
+<!ELEMENT wctp-LookupSubscriber     ( wctp-Originator
+                                    , wctp-LookupMessageControl
+                                    , wctp-Recipient
+                                    ) >
+
+<!ELEMENT wctp-LookupMessageControl EMPTY
+                                    >
+
+<!ATTLIST wctp-LookupMessageControl
+          messageID                 CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+          sendResponsesToID         CDATA  #IMPLIED
+                                    >
+
+<!-- ================================== -->
+<!-- Declaration of wctp-LookupResponse -->
+<!-- ================================== -->
+
+<!ELEMENT wctp-LookupResponse       ( wctp-Originator
+                                    , wctp-Recipient
+                                    , ( wctp-LookupData
+                                      | wctp-Failure
+                                      )  
+                                    ) >
+
+<!ATTLIST wctp-LookupResponse
+          responseToMessageID       CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-LookupData           EMPTY
+                                    >
+
+<!ATTLIST wctp-LookupData
+          maxMessageLength          CDATA  #REQUIRED
+          mcrSupported              ( true | false )  #IMPLIED
+          canRespond                ( true | false )  #IMPLIED
+                                    >
+
+<!-- ==================================== -->
+<!-- Declaration of wctp-DeviceLocation -->
+<!-- ==================================== -->
+
+<!ELEMENT wctp-DeviceLocation     ( wctp-Originator
+                                    , wctp-DeviceLocationControl
+                                    , wctp-Recipient
+                                    ) >
+
+<!ELEMENT wctp-DeviceLocationControl EMPTY
+                                    >
+
+<!ATTLIST wctp-DeviceLocationControl
+          messageID                 CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+          sendResponsesToID         CDATA  #IMPLIED
+          fixType                   ( approximate | estimated |
+                                      precise )  "estimated"
+                                    >
+
+<!-- ================================== -->
+<!-- Declaration of wctp-DeviceLocationResponse -->
+<!-- ================================== -->
+
+<!ELEMENT wctp-DeviceLocationResponse ( wctp-Originator
+                                    , wctp-Recipient
+                                    , ( wctp-LocationData
+                                      | wctp-Failure
+                                      )  
+                                    ) >
+
+<!ATTLIST wctp-DeviceLocationResponse
+          responseToMessageID       CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-LocationData           EMPTY
+                                    >
+
+<!ATTLIST wctp-LocationData
+          status                    ( ok | invalid | noalt |
+                                      nolonglat | stale )  #REQUIRED
+          fixType                   ( approximate | estimated | 
+                                      precise ) #REQUIRED
+          fixTimeStamp              CDATA  #IMPLIED
+          longitude                 CDATA  #IMPLIED
+          latitude                  CDATA  #IMPLIED
+          altitude                  CDATA  #IMPLIED 
+                                    >
+
+
+<!-- ======================================  -->
+<!-- Declaration of wctp-MessageReply        -->
+<!-- ======================================  -->
+
+<!ELEMENT wctp-MessageReply         ( wctp-ResponseHeader
+                                    , wctp-Payload
+                                    ) >
+
+<!ATTLIST wctp-MessageReply   
+          MCRMessageReply           ( true | false ) "false"
+                                    >
+
+<!ELEMENT wctp-ResponseHeader       ( wctp-Originator
+                                    , wctp-MessageControl
+                                    , wctp-Recipient
+                                    ) >
+
+<!ATTLIST wctp-ResponseHeader
+          responseToMessageID       CDATA  #REQUIRED
+          responseTimestamp         CDATA  #IMPLIED
+          respondingToTimestamp     CDATA  #IMPLIED
+          onBehalfOfRecipientID     CDATA  #IMPLIED
+                                    >
+
+<!-- =================================== -->
+<!-- Declaration of wctp-PollForMessages -->
+<!-- =================================== -->
+
+<!ELEMENT wctp-PollForMessages      ( wctp-MessageReceived*
+                                    ) >
+
+<!ATTLIST wctp-PollForMessages
+          pollerID                  CDATA  #REQUIRED
+          securityCode              CDATA  #IMPLIED
+          maxMessagesInBatch        CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-MessageReceived      ( wctp-Failure
+                                    | wctp-Success
+                                    ) >
+
+<!ATTLIST wctp-MessageReceived
+          sequenceNo                CDATA  #REQUIRED
+                                    >
+
+<!-- =================================== -->
+<!-- Declaration of wctp-PollResponse    -->
+<!-- =================================== -->
+
+<!ELEMENT wctp-PollResponse         ( wctp-Message+
+                                    | wctp-Failure
+                                    | wctp-NoMessages
+                                    ) >
+
+<!ATTLIST wctp-PollResponse
+          minNextPollInterval       CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-Message              ( wctp-SubmitRequest
+                                    | wctp-MessageReply
+                                    | wctp-StatusInfo
+                                    | wctp-LookupResponse
+                                    ) >
+
+<!ATTLIST wctp-Message
+          sequenceNo                CDATA  #REQUIRED
+                                    >
+
+<!ELEMENT wctp-NoMessages           EMPTY
+                                    >
+
+<!-- =================================== -->
+<!-- Declaration of wctp-ReturnToSvc     -->
+<!-- =================================== -->
+
+<!--  Note: limit 1 WCTP address per wctp-ReturnToSvc  -->
+<!ELEMENT wctp-ReturnToSvc          ( #PCDATA )         
+                                    >
+
+<!-- ================================== -->
+<!-- Declaration of wctp-SendMsgMulti   -->
+<!-- ================================== -->
+
+<!ELEMENT wctp-SendMsgMulti         ( wctp-MsgMultiHeader
+                                    , wctp-Payload
+                                    ) >
+
+<!ELEMENT wctp-MsgMultiHeader       ( wctp-Originator
+                                    , wctp-MsgMultiControl
+                                    , wctp-Recipient+
+                                    ) >
+
+<!ATTLIST wctp-MsgMultiHeader
+          submitTimestamp           CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-MsgMultiControl      EMPTY
+                                    >
+
+<!ATTLIST wctp-MsgMultiControl
+          messageID                 CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+          sendResponsesToID         CDATA  #IMPLIED
+          allowResponse             ( true | false ) "true"
+          notifyWhenQueued          ( true | false ) "false"
+          notifyWhenDelivered       ( true | false ) "false"
+          notifyWhenRead            ( true | false ) "false"
+          deliveryPriority          ( HIGH | NORMAL | LOW) "NORMAL"
+          deliveryAfter             CDATA  #IMPLIED
+          deliveryBefore            CDATA  #IMPLIED
+          preformatted              ( true | false ) "false"
+          allowTruncation           ( true | false ) "true"
+          allRecipsRequired         ( true | false ) "false"
+                                    >
+
+<!-- ========================================= -->
+<!-- Declaration of wctp-SendMsgMultiResponse  -->
+<!-- ========================================= -->
+<!ELEMENT wctp-SendMsgMultiResponse ( ( wctp-Failure 
+                                      | wctp-Success ),
+                                    wctp-FailedRecipient*
+                                    ) >
+                                    
+<!ATTLIST wctp-SendMsgMultiResponse
+          maxNumRecips              CDATA  #REQUIRED
+          numValidRecips            CDATA  #IMPLIED
+          numInvalidRecips          CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-FailedRecipient      EMPTY
+                                    >
+
+<!ATTLIST wctp-FailedRecipient
+          recipientID               CDATA  #REQUIRED
+    	  errorCode                 CDATA  #REQUIRED
+          errorText                 CDATA  #IMPLIED
+                                    >
+
+<!-- ==================================  -->
+<!-- Declaration of wctp-StatusInfo      -->
+<!-- ==================================  -->
+
+<!ELEMENT wctp-StatusInfo           ( wctp-ResponseHeader
+                                    , ( wctp-Failure
+                                      | wctp-Notification )
+                                    ) >
+
+<!ELEMENT wctp-Failure              ( #PCDATA )
+                                    >
+
+<!ATTLIST wctp-Failure
+          errorCode                 CDATA  #REQUIRED
+          errorText                 CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-Notification         EMPTY
+                                    >
+
+<!ATTLIST wctp-Notification
+          type                      ( QUEUED | DELIVERED | READ )  #REQUIRED
+                                    >
+
+<!-- ======================================= -->
+<!-- Declaration of wctp-SubmitClientMessage -->
+<!-- ======================================= -->
+
+<!ELEMENT wctp-SubmitClientMessage  ( wctp-SubmitClientHeader
+                                    , wctp-Payload
+                                    ) >
+
+<!ELEMENT wctp-SubmitClientHeader   ( wctp-ClientOriginator
+                                    , wctp-ClientMessageControl?
+                                    , wctp-Recipient
+                                    ) >
+
+<!ATTLIST wctp-SubmitClientHeader
+          submitTimestamp           CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-ClientOriginator     EMPTY
+                                    >
+
+<!ATTLIST wctp-ClientOriginator
+          senderID                  CDATA  #REQUIRED
+          miscInfo                  CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-ClientMessageControl EMPTY
+                                    >
+<!ATTLIST wctp-ClientMessageControl
+          sendResponsesToID         CDATA  #IMPLIED
+          allowResponse             ( true | false ) "true"
+          notifyWhenQueued          ( true | false ) "false"
+          notifyWhenDelivered       ( true | false ) "false"
+          notifyWhenRead            ( true | false ) "false"
+          deliveryPriority          ( HIGH | NORMAL | LOW) "NORMAL"
+          deliveryAfter             CDATA  #IMPLIED
+          deliveryBefore            CDATA  #IMPLIED
+          preformatted              ( true | false ) "false"
+          allowTruncation           ( true | false ) "true"
+                                    >
+
+<!-- ======================================== -->
+<!-- Declaration of wctp-SubmitClientResponse -->
+<!-- ======================================== -->
+
+<!ELEMENT wctp-SubmitClientResponse ( wctp-Failure
+                                    | wctp-ClientSuccess
+                                    ) >
+
+<!ELEMENT wctp-ClientSuccess        (#PCDATA)
+                                    >
+<!ATTLIST wctp-ClientSuccess
+          successCode               CDATA  #REQUIRED
+          successText               CDATA  #IMPLIED
+          trackingNumber            CDATA  #REQUIRED
+                                    >
+
+<!-- ================================== -->
+<!-- Declaration of wctp-SubmitRequest  -->
+<!-- ================================== -->
+
+<!ELEMENT wctp-SubmitRequest        ( wctp-SubmitHeader
+                                    , wctp-Payload
+                                    ) >
+
+<!ELEMENT wctp-SubmitHeader         ( wctp-Originator
+                                    , wctp-MessageControl
+                                    , wctp-Recipient
+                                    ) >
+<!ATTLIST wctp-SubmitHeader
+          submitTimestamp           CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-Originator           EMPTY
+                                    >
+
+<!ATTLIST wctp-Originator
+          senderID                  CDATA  #REQUIRED
+          securityCode              CDATA  #IMPLIED
+          miscInfo                  CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-MessageControl       EMPTY
+                                    >
+
+<!ATTLIST wctp-MessageControl
+          messageID                 CDATA  #REQUIRED
+          transactionID             CDATA  #IMPLIED
+          sendResponsesToID         CDATA  #IMPLIED
+          allowResponse             ( true | false ) "true"
+          notifyWhenQueued          ( true | false ) "false"
+          notifyWhenDelivered       ( true | false ) "false"
+          notifyWhenRead            ( true | false ) "false"
+          deliveryPriority          ( HIGH | NORMAL | LOW) "NORMAL"
+          deliveryAfter             CDATA  #IMPLIED
+          deliveryBefore            CDATA  #IMPLIED
+          preformatted              ( true | false ) "false"
+          allowTruncation           ( true | false ) "true"
+                                    >
+
+<!ELEMENT wctp-Recipient            EMPTY
+                                    >
+<!ATTLIST wctp-Recipient
+          recipientID               CDATA  #REQUIRED
+          authorizationCode         CDATA  #IMPLIED
+                                    >
+
+<!ELEMENT wctp-Payload              ( wctp-MCR
+                                    | wctp-Alphanumeric
+                                    | wctp-TransparentData
+                                    ) >
+
+<!ELEMENT wctp-MCR                  ( wctp-MessageText
+                                    , (wctp-Choice
+                                      | wctp-ChoicePair)+ 
+                                    ) >
+
+<!ELEMENT wctp-MessageText          ( #PCDATA )
+                                    >
+
+<!ELEMENT wctp-Choice               ( #PCDATA )
+                                    >
+
+<!ELEMENT wctp-ChoicePair           ( wctp-SendChoice
+                                    , wctp-ReplyChoice? )
+                                    >
+
+<!ELEMENT wctp-SendChoice           ( #PCDATA )
+                                    >
+
+<!ELEMENT wctp-ReplyChoice          ( #PCDATA )
+                                    >
+
+<!-- ================================ -->
+<!-- Declaration of wctp-VersionQuery -->
+<!-- ================================ -->
+
+<!ELEMENT wctp-VersionQuery         EMPTY
+                                    >
+<!ATTLIST wctp-VersionQuery
+            inquirer                CDATA   #REQUIRED
+            dateTime                CDATA   #IMPLIED
+                                    >
+
+<!-- ======================================== -->
+<!-- Declaration of wctp-VersionResponse -->
+<!-- ======================================== -->
+
+<!ELEMENT wctp-VersionResponse      ( wctp-ContactInfo?
+                                    , ( wctp-Failure
+                                      | wctp-DTDSupport+ )
+                                    ) >
+
+<!ATTLIST wctp-VersionResponse  
+            responder               CDATA   #REQUIRED
+            dateTimeOfRsp           CDATA   #IMPLIED
+            inquirer                CDATA   #IMPLIED
+            dateTimeOfReq           CDATA   #IMPLIED
+            invalidAfter            CDATA   #IMPLIED
+                                    >
+
+<!-- =============================== -->
+<!-- Declaration of wctp-ContactInfo -->
+<!-- =============================== -->
+
+<!ELEMENT wctp-ContactInfo          EMPTY
+                                    >
+
+<!ATTLIST wctp-ContactInfo
+            email                   CDATA   #IMPLIED
+            phone                   CDATA   #IMPLIED
+            www                     CDATA   #IMPLIED
+            info                    CDATA   #IMPLIED
+>
+
+<!-- ============================= -->
+<!-- Declaration of wctpDTDSupport -->
+<!-- ============================= -->
+
+<!ELEMENT wctp-DTDSupport           EMPTY
+                                    >
+
+<!ATTLIST wctp-DTDSupport
+          dtdName                   CDATA   #REQUIRED
+          verToken                  CDATA   #IMPLIED
+          supportType               ( Supported
+                                    | Deprecated
+                                    | NotSupported ) "Supported"
+          exceptions                ( yes | no ) "no"
+          supportUntil              CDATA   #IMPLIED
+          replacement               CDATA   #IMPLIED
+                                    >
+ 
+
+<!-- ================================ -->
+<!-- Common elements to WCTP commands -->
+<!-- ================================ -->
+
+<!ELEMENT wctp-Alphanumeric         ( #PCDATA )
+                                    >
+
+<!ELEMENT wctp-TransparentData      ( #PCDATA )
+                                    >
+                                    
+<!ATTLIST wctp-TransparentData
+          type                      ( OPAQUE 
+                                    | FLEXSuite 
+                                    | FLEXsuite ) "OPAQUE"
+          encoding                  ( standard | base64 ) "base64"
+                                    >

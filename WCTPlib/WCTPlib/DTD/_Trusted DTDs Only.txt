@@ -1,0 +1,1 @@
+﻿Only put trusted .dtd files in this folder/embed them.
