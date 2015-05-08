@@ -131,6 +131,23 @@ namespace WCTPlib.v1r1
             public ClientMessages(IEnumerable<XElement> responses)
                 : this()
             {
+                foreach (var response in responses)
+                {
+                    ClientMessage message = null;
+
+                    switch (response.Name.LocalName)
+                    {
+                        case "wctp-ClientMessageReply":
+                            message = ClientMessage.ClientMessageReply.Parse(response);
+                            break;
+                        case "wctp-ClientStatusInfo":
+                            message = ClientMessage.ClientStatusInfo.Parse(response);
+                            break;
+                    }
+
+                    if (message != null)
+                        CQRClientMessages.Add(message);
+                }
             }
 
             public ClientMessages()
@@ -204,81 +221,180 @@ namespace WCTPlib.v1r1
                 internal abstract XElement GetResponse();
 
                 #endregion Private Methods
-            }
 
-            //public class ClientMessageReply<T> : ClientMessage
-            //    where T : IPayload
-            //{
-            //    internal override XElement GetResponse()
-            //    {
-            //        throw new NotImplementedException();
-            //    }
-            //}
-
-            public abstract class ClientStatusInfo : ClientMessage
-            {
-                protected ClientStatusInfo()
-                    : base()
+                public abstract class ClientMessageReply : ClientMessage
                 {
-                }
-
-                public ClientStatusInfo(string senderId, string recipientId)
-                    : base(senderId, recipientId)
-                {
-                }
-
-                public class Failure : ClientStatusInfo
-                {
-                    internal Failure(XElement response)
+                    protected ClientMessageReply()
+                        : base()
                     {
-                        ErrorCode = int.Parse((string)response.Attribute("errorCode"));
-                        ErrorText = (string)response.Attribute("errorText");
-                        Message = response.Value;
                     }
 
-                    public Failure(string senderId, string recipientId, int errorCode)
+                    internal static ClientMessageReply Parse(XElement response)
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    public ClientMessageReply(string senderId, string recipientId)
                         : base(senderId, recipientId)
                     {
-                        ErrorCode = errorCode;
                     }
 
-                    [Required]
-                    public int ErrorCode { get; set; }//WCTP standard numeric error value representing the type of error being reported.
-                    //[DefaultValue(null)]
-                    public string ErrorText { get; set; }
-                    //[DefaultValue(null)]
-                    public string Message { get; set; }
-
-                    internal override XElement GetResponse()
+                    public class MCR : ClientMessageReply
                     {
-                        var element = new XElement("wctp-Failure", new XAttribute("errorCode", ErrorCode));
-                        if (!String.IsNullOrEmpty(ErrorText))
-                            element.Add(new XAttribute("errorText", ErrorText));
-                        if (!String.IsNullOrEmpty(Message))
-                            element.Add(Message);
-                        return element;
+                        internal MCR(XElement response)
+                        {
+                            throw new NotImplementedException();
+                        }
+
+                        public MCR(string senderId, string recipientId)
+                            : base(senderId, recipientId)
+                        {
+                            Choices = new List<string>();
+                        }
+
+                        public string Message { get; set; }
+                        public IList<string> Choices { get; set; }
+
+                        internal override XElement GetResponse()
+                        {
+                            var payload = new XElement("wctp-MCR", new XElement("wctp-MessageText", Message));
+                            foreach (var choice in Choices)
+                            {
+                                payload.Add(new XElement("wctp-Choice", choice));
+                            }
+                            return new XElement("wctp-Payload", payload);
+                        }
+                    }
+
+                    public class TransparentData : ClientMessageReply
+                    {
+                        internal TransparentData(XElement response)
+                        {
+                            Type = (DataType)Enum.Parse(typeof(DataType), (string)response.Attribute("type"), true);
+                            Encoding = (DataEncoding)Enum.Parse(typeof(DataEncoding), (string)response.Attribute("encoding"), true);
+                            Data = Decode(response.Value, Encoding);//Do this through a setter on Message?
+                        }
+
+                        public TransparentData(string senderId, string recipientId)
+                            : base(senderId, recipientId)
+                        {
+                            Type = DataType.OPAQUE;
+                            Encoding = DataEncoding.base64;
+                        }
+
+                        public DataType Type { get; set; }
+                        public DataEncoding Encoding { get; set; }
+                        public byte[] Data { get; set; }
+
+                        public string Message
+                        {
+                            get
+                            {
+                                return Encode(Data, Encoding);
+                            }
+                        }
+
+                        internal override XElement GetResponse()
+                        {
+                            return new XElement("wctp-Payload", new XElement(
+                                "wctp-TransparentData",
+                                new XAttribute("type", Type.ToString()),
+                                new XAttribute("encoding", Encoding.ToString()),
+                                Message));
+                        }
+                    }
+
+                    public class Alphanumeric : ClientMessageReply
+                    {
+                        internal Alphanumeric(XElement response)
+                        {
+                            Message = response.Value;
+                        }
+
+                        public Alphanumeric(string senderId, string recipientId)
+                            : base(senderId, recipientId)
+                        {
+                        }
+
+                        public string Message { get; set; }
+
+                        internal override XElement GetResponse()
+                        {
+                            return new XElement("wctp-Payload", new XElement("wctp-Alphanumeric", Message));
+                        }
                     }
                 }
 
-                public class Notification : ClientStatusInfo
+                public abstract class ClientStatusInfo : ClientMessage
                 {
-                    internal Notification(XElement response)
+                    protected ClientStatusInfo()
+                        : base()
                     {
-                        Type = (NotificationType)Enum.Parse(typeof(NotificationType), (string)response.Attribute("type"), true);
                     }
 
-                    public Notification(string senderId, string recipientId, NotificationType type)
+                    internal static ClientStatusInfo Parse(XElement response)
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    public ClientStatusInfo(string senderId, string recipientId)
                         : base(senderId, recipientId)
                     {
-                        Type = type;
                     }
 
-                    [Required]
-                    public NotificationType Type { get; set; }
-
-                    internal override XElement GetResponse()
+                    public class Failure : ClientStatusInfo
                     {
-                        return new XElement("wctp-Notification", new XAttribute("type", Type.ToString()));
+                        internal Failure(XElement response)
+                        {
+                            ErrorCode = int.Parse((string)response.Attribute("errorCode"));
+                            ErrorText = (string)response.Attribute("errorText");
+                            Message = response.Value;
+                        }
+
+                        public Failure(string senderId, string recipientId, int errorCode)
+                            : base(senderId, recipientId)
+                        {
+                            ErrorCode = errorCode;
+                        }
+
+                        [Required]
+                        public int ErrorCode { get; set; }//WCTP standard numeric error value representing the type of error being reported.
+                        //[DefaultValue(null)]
+                        public string ErrorText { get; set; }
+                        //[DefaultValue(null)]
+                        public string Message { get; set; }
+
+                        internal override XElement GetResponse()
+                        {
+                            var element = new XElement("wctp-Failure", new XAttribute("errorCode", ErrorCode));
+                            if (!String.IsNullOrEmpty(ErrorText))
+                                element.Add(new XAttribute("errorText", ErrorText));
+                            if (!String.IsNullOrEmpty(Message))
+                                element.Add(Message);
+                            return element;
+                        }
+                    }
+
+                    public class Notification : ClientStatusInfo
+                    {
+                        internal Notification(XElement response)
+                        {
+                            Type = (NotificationType)Enum.Parse(typeof(NotificationType), (string)response.Attribute("type"), true);
+                        }
+
+                        public Notification(string senderId, string recipientId, NotificationType type)
+                            : base(senderId, recipientId)
+                        {
+                            Type = type;
+                        }
+
+                        [Required]
+                        public NotificationType Type { get; set; }
+
+                        internal override XElement GetResponse()
+                        {
+                            return new XElement("wctp-Notification", new XAttribute("type", Type.ToString()));
+                        }
                     }
                 }
             }
