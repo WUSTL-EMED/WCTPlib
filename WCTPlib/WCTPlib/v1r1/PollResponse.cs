@@ -61,9 +61,13 @@ namespace WCTPlib.v1r1
 
         protected override XElement GetOperation()
         {
-            var operation = new XElement("wctp-PollResponse", GetResponse());
+            var operation = new XElement("wctp-PollResponse");
             if (MinNextPollInterval.HasValue)
                 operation.Add(new XAttribute("minNextPollInterval", MinNextPollInterval.Value));
+            foreach (var response in GetResponse())
+            {
+                operation.Add(response);
+            }
             return operation;
         }
 
