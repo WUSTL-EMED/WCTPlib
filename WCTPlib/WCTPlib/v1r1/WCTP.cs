@@ -49,7 +49,7 @@ namespace WCTPlib.v1r1
                 case "wctp-ClientQuery":
                     return ClientQuery.Parse(operation);
                 case "wctp-ClientQueryResponse":
-                    return null;//ClientQueryResponse.Parse(operation);
+                    return ClientQueryResponse.Parse(operation);
                 case "wctp-Confirmation":
                     return Confirmation.Parse(operation);
                 case "wctp-Failure"://generic error
@@ -63,7 +63,7 @@ namespace WCTPlib.v1r1
                 case "wctp-PollForMessages":
                     return PollForMessages.Parse(operation);
                 case "wctp-PollResponse":
-                    return null;//PollResponse.Parse(operation);
+                    return PollResponse.Parse(operation);
                 case "wctp-StatusInfo":
                     return StatusInfo.Parse(operation);
                 case "wctp-SubmitClientMessage":

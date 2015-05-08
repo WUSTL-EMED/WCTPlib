@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace WCTPlib.v1r1
 {
-    public abstract class MessageReply : Operation
+    public abstract class MessageReply : Operation, IPollResponse
     {
         internal static MessageReply Parse(XElement operation)
         {
@@ -235,6 +235,11 @@ namespace WCTPlib.v1r1
         }
 
         #endregion Overrides
+
+        public XElement GetPollResponse()
+        {
+            return GetOperation();
+        }
 
         public class MCR : MessageReply
         {

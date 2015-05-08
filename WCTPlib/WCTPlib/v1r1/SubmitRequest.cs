@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace WCTPlib.v1r1
 {
     //enterprise
-    public abstract class SubmitRequest : Operation
+    public abstract class SubmitRequest : Operation, IPollResponse
     {
         internal static SubmitRequest Parse(XElement operation)
         {
@@ -211,6 +211,11 @@ namespace WCTPlib.v1r1
         }
 
         #endregion Overrides
+
+        public XElement GetPollResponse()
+        {
+            return GetOperation();
+        }
 
         public class MCR : SubmitRequest
         {

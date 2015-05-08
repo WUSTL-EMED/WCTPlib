@@ -6,7 +6,7 @@ using System.Xml.Linq;
 namespace WCTPlib.v1r1
 {
     //This seems to be more of a transient client (device) push than an enterprise push
-    public abstract class LookupResponse : Operation
+    public abstract class LookupResponse : Operation, IPollResponse
     {
         #region Constructors
 
@@ -129,6 +129,11 @@ namespace WCTPlib.v1r1
         }
 
         #endregion Overrides
+
+        public XElement GetPollResponse()
+        {
+            return GetOperation();
+        }
 
         public class LookupData : LookupResponse
         {

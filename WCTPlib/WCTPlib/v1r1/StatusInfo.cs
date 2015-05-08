@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace WCTPlib.v1r1
 {
-    public abstract class StatusInfo : Operation
+    public abstract class StatusInfo : Operation, IPollResponse
     {
         #region Constructors
 
@@ -228,6 +228,11 @@ namespace WCTPlib.v1r1
         }
 
         #endregion Overrides
+
+        public XElement GetPollResponse()
+        {
+            return GetOperation();
+        }
 
         public class Notification : StatusInfo
         {

@@ -52,6 +52,8 @@
     <Compile Include="Utf8StringWriter.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="v1r0\WCTP.cs" />
+    <Compile Include="v1r1\ClientQueryResponse.cs" />
+    <Compile Include="v1r1\PollResponse.cs" />
     <Compile Include="v1r1\ClientQuery.cs" />
     <Compile Include="v1r1\Confirmation.cs" />
     <Compile Include="v1r1\Failure.cs" />
