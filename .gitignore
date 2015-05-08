@@ -2,6 +2,8 @@
 */packages/
 **/Secure*.config
 **/$tf/*
+/BuildProcessTemplates/
+.tfignore
 
 #################
 ## Eclipse
