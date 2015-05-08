@@ -130,21 +130,21 @@ namespace WCTPlib.v1r1
             {
                 foreach (var response in responses)
                 {
-                    Message<IPollResponse> message = null;
+                    Message message = null;
 
                     switch (response.Name.LocalName)
                     {
                         case "wctp-SubmitRequest":
-                            message = new Message<IPollResponse>() { PRMessage = SubmitRequest.Parse(response) };
+                            message = new Message() { PRMessage = SubmitRequest.Parse(response) };
                             break;
                         case "wctp-MessageReply":
-                            message = new Message<IPollResponse>() { PRMessage = MessageReply.Parse(response) };
+                            message = new Message() { PRMessage = MessageReply.Parse(response) };
                             break;
                         case "wctp-StatusInfo":
-                            message = new Message<IPollResponse>() { PRMessage = StatusInfo.Parse(response) };
+                            message = new Message() { PRMessage = StatusInfo.Parse(response) };
                             break;
                         case "wctp-LookupResponse":
-                            message = new Message<IPollResponse>() { PRMessage = LookupResponse.Parse(response) };
+                            message = new Message() { PRMessage = LookupResponse.Parse(response) };
                             break;
                     }
 
@@ -155,23 +155,22 @@ namespace WCTPlib.v1r1
 
             public Messages()
             {
-                PRMessages = new List<Message<IPollResponse>>();
+                PRMessages = new List<Message>();
             }
 
-            public IList<Message<IPollResponse>> PRMessages { get; set; }
+            public IList<Message> PRMessages { get; set; }
 
             protected override IList<XElement> GetResponse()
             {
                 return PRMessages.Select(_ => _.GetResponse()).ToList();
             }
 
-            public class Message<T>
-                where T : IPollResponse
+            public class Message
             {
                 [Required]
                 public int SequenceNo { get; set; }
 
-                public T PRMessage { get; set; }
+                public IPollResponse PRMessage { get; set; }
 
                 internal XElement GetResponse()
                 {
