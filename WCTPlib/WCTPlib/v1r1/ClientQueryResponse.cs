@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace WCTPlib.v1r1
 {
-    public interface IClientQueryResponse
+    public interface IPayload
     {
         XElement GetClientQueryResponse();
     }
@@ -54,6 +54,7 @@ namespace WCTPlib.v1r1
 
         #region Properties
 
+        //[DefaultValue(null)]
         public uint? MinNextPollInterval { get; set; }
 
         #endregion Properties
@@ -134,25 +135,81 @@ namespace WCTPlib.v1r1
 
             public ClientMessages()
             {
-                CQRClientMessages = new List<ClientMessage<IClientQueryResponse>>();
+                CQRClientMessages = new List<ClientMessage>();
             }
 
-            public IList<ClientMessage<IClientQueryResponse>> CQRClientMessages { get; set; }
+            public IList<ClientMessage> CQRClientMessages { get; set; }
 
             protected override IList<XElement> GetResponse()
             {
                 return CQRClientMessages.Select(_ => _.GetResponse()).ToList();
             }
 
-            public class ClientMessage<T>
-                where T : IClientQueryResponse
+            public abstract class ClientMessage
             {
-                public T CQRClientMessage { get; set; }
+                #region Properties
 
-                internal XElement GetResponse()
+                //ClientResponseHeader
+                //[DefaultValue(null)]
+                public DateTime? ResponseTimestamp { get; set; }
+                //[DefaultValue(null)]
+                public DateTime? RespondingToTimestamp { get; set; }
+
+                //Originator
+                [Required]
+                public string SenderId { get; set; }
+                //[DefaultValue(null)]
+                public string SecurityCode { get; set; }
+                //[DefaultValue(null)]
+                public string MiscInfo { get; set; }
+
+                //Recipient
+                [Required]
+                public string RecipientId { get; set; }
+                //[DefaultValue(null)]
+                public string AuthorizationCode { get; set; }
+
+                #endregion Properties
+
+                #region Private Methods
+
+                private XElement GetOriginator()
+                {
+                    var element = new XElement("wctp-Originator", new XAttribute("senderID", SenderId));
+                    if (!String.IsNullOrEmpty(SecurityCode))
+                        element.Add(new XAttribute("securityCode", SecurityCode));
+                    if (!String.IsNullOrEmpty(MiscInfo))
+                        element.Add(new XAttribute("miscInfo", MiscInfo));
+                    return element;
+                }
+
+                private XElement GetRecipient()
+                {
+                    var element = new XElement("wctp-Recipient", new XAttribute("recipientID", RecipientId));
+                    if (!String.IsNullOrEmpty(AuthorizationCode))
+                        element.Add(new XAttribute("authorizationCode", AuthorizationCode));
+                    return element;
+                }
+
+                internal abstract XElement GetResponse();
+
+                #endregion Private Methods
+            }
+
+            public class ClientMessageReply<T> : ClientMessage
+                where T : IPayload
+            {
+                internal override XElement GetResponse()
                 {
                     throw new NotImplementedException();
-                    //return new XElement("wctp-Message", CQRClientMessage.GetClientQueryResponse());
+                }
+            }
+
+            public abstract class ClientStatusInfo : ClientMessage
+            {
+                internal override XElement GetResponse()
+                {
+                    throw new NotImplementedException();
                 }
             }
         }

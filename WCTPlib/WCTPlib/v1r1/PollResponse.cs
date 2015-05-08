@@ -51,6 +51,7 @@ namespace WCTPlib.v1r1
 
         #region Properties
 
+        //[DefaultValue(null)]
         public uint? MinNextPollInterval { get; set; }
 
         #endregion Properties
