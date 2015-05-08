@@ -147,6 +147,16 @@ namespace WCTPlib.v1r1
 
             public abstract class ClientMessage
             {
+                protected ClientMessage()
+                {
+                }
+
+                public ClientMessage(string senderId, string recipientId)
+                {
+                    SenderId = senderId;
+                    RecipientId = recipientId;
+                }
+
                 #region Properties
 
                 //ClientResponseHeader
@@ -196,20 +206,80 @@ namespace WCTPlib.v1r1
                 #endregion Private Methods
             }
 
-            public class ClientMessageReply<T> : ClientMessage
-                where T : IPayload
-            {
-                internal override XElement GetResponse()
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            //public class ClientMessageReply<T> : ClientMessage
+            //    where T : IPayload
+            //{
+            //    internal override XElement GetResponse()
+            //    {
+            //        throw new NotImplementedException();
+            //    }
+            //}
 
             public abstract class ClientStatusInfo : ClientMessage
             {
-                internal override XElement GetResponse()
+                protected ClientStatusInfo()
+                    : base()
                 {
-                    throw new NotImplementedException();
+                }
+
+                public ClientStatusInfo(string senderId, string recipientId)
+                    : base(senderId, recipientId)
+                {
+                }
+
+                public class Failure : ClientStatusInfo
+                {
+                    internal Failure(XElement response)
+                    {
+                        ErrorCode = int.Parse((string)response.Attribute("errorCode"));
+                        ErrorText = (string)response.Attribute("errorText");
+                        Message = response.Value;
+                    }
+
+                    public Failure(string senderId, string recipientId, int errorCode)
+                        : base(senderId, recipientId)
+                    {
+                        ErrorCode = errorCode;
+                    }
+
+                    [Required]
+                    public int ErrorCode { get; set; }//WCTP standard numeric error value representing the type of error being reported.
+                    //[DefaultValue(null)]
+                    public string ErrorText { get; set; }
+                    //[DefaultValue(null)]
+                    public string Message { get; set; }
+
+                    internal override XElement GetResponse()
+                    {
+                        var element = new XElement("wctp-Failure", new XAttribute("errorCode", ErrorCode));
+                        if (!String.IsNullOrEmpty(ErrorText))
+                            element.Add(new XAttribute("errorText", ErrorText));
+                        if (!String.IsNullOrEmpty(Message))
+                            element.Add(Message);
+                        return element;
+                    }
+                }
+
+                public class Notification : ClientStatusInfo
+                {
+                    internal Notification(XElement response)
+                    {
+                        Type = (NotificationType)Enum.Parse(typeof(NotificationType), (string)response.Attribute("type"), true);
+                    }
+
+                    public Notification(string senderId, string recipientId, NotificationType type)
+                        : base(senderId, recipientId)
+                    {
+                        Type = type;
+                    }
+
+                    [Required]
+                    public NotificationType Type { get; set; }
+
+                    internal override XElement GetResponse()
+                    {
+                        return new XElement("wctp-Notification", new XAttribute("type", Type.ToString()));
+                    }
                 }
             }
         }
