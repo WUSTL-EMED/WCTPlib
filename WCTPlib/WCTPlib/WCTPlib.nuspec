@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>$id$</id>
+        <version>$version$</version>
+        <authors>Aaron Papp</authors>
+        <licenseUrl>https://github.com/PCFDev/WCTPlib/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/PCFDev/WCTPlib</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>$description$</description>
+        <copyright>Copyright © WUSM 2015</copyright>
+        <language>en-US</language>
+        <tags>wctp</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="" />
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Net.Http" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Web" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="bin\Release\$id$.dll" target="lib\net45\$id$.dll" />
+    </files>
+</package>

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="WCTPlib.nuspec" />
     <Compile Include="TypeRouter.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Operation.cs" />
@@ -89,6 +90,12 @@
     <Content Include="DTD\_Trusted DTDs Only.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>del "$(SolutionDir)\$(ProjectName).*.nupkg"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" CALL nuget pack "$(ProjectPath)" -Prop Configuration="$(ConfigurationName)" -outputdirectory "$(SolutionDir)\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

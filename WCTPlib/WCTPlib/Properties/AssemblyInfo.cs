@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WCTPlib")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A .NET library for generating and parsing WCTP requests and responses as well as handling routing for a WCTP endpoint using an HttpHandler.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WUSM")]
 [assembly: AssemblyProduct("WCTPlib")]
@@ -31,9 +31,9 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
+// [assembly: AssemblyVersion("1.0.0.0")]
+// [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // Allow the unit test project to see internals.
 [assembly: InternalsVisibleTo("WCTPlib.Tests")]

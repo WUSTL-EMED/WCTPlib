@@ -4,6 +4,7 @@
 **/$tf/*
 /BuildProcessTemplates/
 .tfignore
+**/WCTPlib.*.nupkg
 
 #################
 ## Eclipse
