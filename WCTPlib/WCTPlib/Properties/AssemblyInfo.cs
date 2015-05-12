@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WCTPlib")]
-[assembly: AssemblyDescription("A .NET library for generating and parsing WCTP requests and responses as well as handling routing for a WCTP endpoint using an HttpHandler.")]
+[assembly: AssemblyDescription("A .NET library for generating and parsing WCTP requests and responses as well as handling routing for a WCTP endpoint using a HttpHandler.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WUSM")]
 [assembly: AssemblyProduct("WCTPlib")]
