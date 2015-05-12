@@ -87,7 +87,7 @@
     <EmbeddedResource Include="DTD\wctpv1-0.dtd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DTD\_Trusted DTDs Only.txt" />
+    <None Include="DTD\_Trusted DTDs Only.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
