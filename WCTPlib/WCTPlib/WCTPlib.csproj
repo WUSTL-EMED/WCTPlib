@@ -94,7 +94,7 @@
     <PreBuildEvent>del "$(SolutionDir)\$(ProjectName).*.nupkg"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)" == "Release" CALL nuget pack "$(ProjectPath)" -Properties Configuration=$(ConfigurationName);TargetPath="$(TargetPath)" -outputdirectory "$(SolutionDir)\"</PostBuildEvent>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" CALL nuget pack "$(ProjectPath)" -Symbols -Properties Configuration="$(ConfigurationName)" -outputdirectory "$(SolutionDir)\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -27,7 +27,4 @@
             <frameworkAssembly assemblyName="System.Xml.Linq" />
         </frameworkAssemblies>
     </metadata>
-    <files>
-        <file src="$targetpath$" target="lib\net45\" />
-    </files>
 </package>
