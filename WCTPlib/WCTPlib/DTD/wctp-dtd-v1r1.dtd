@@ -375,7 +375,7 @@
 <!-- Declaration of wctp-ContactInfo -->
 <!-- =============================== -->
 
-<!ELEMENT wctp-ContactInfo      (EMPTY) >
+<!ELEMENT wctp-ContactInfo      EMPTY >
 
 <!ATTLIST wctp-ContactInfo
             email               CDATA   #IMPLIED
@@ -389,7 +389,7 @@
 <!-- Declaration of wctpDTDSupport -->
 <!-- ============================= -->
 
-<!ELEMENT wctp-DTDSupport       (EMPTY) >
+<!ELEMENT wctp-DTDSupport       EMPTY >
 
 <!ATTLIST wctp-DTDSupport
             dtdName             CDATA   #REQUIRED
