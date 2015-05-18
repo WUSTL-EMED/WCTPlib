@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://tempuri.org/wctp-dtd-v1r1" elementFormDefault="qualified" targetNamespace="http://tempuri.org/wctp-dtd-v1r1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="wctp-Operation">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-ClientQuery" />
+        <xs:element ref="wctp-ClientQueryResponse" />
+        <xs:element ref="wctp-Confirmation" />
+        <xs:element ref="wctp-LookupSubscriber" />
+        <xs:element ref="wctp-LookupResponse" />
+        <xs:element ref="wctp-MessageReply" />
+        <xs:element ref="wctp-PollForMessages" />
+        <xs:element ref="wctp-PollResponse" />
+        <xs:element ref="wctp-StatusInfo" />
+        <xs:element ref="wctp-SubmitClientMessage" />
+        <xs:element ref="wctp-SubmitClientResponse" />
+        <xs:element ref="wctp-SubmitRequest" />
+        <xs:element ref="wctp-VersionQuery" />
+        <xs:element ref="wctp-VersionResponse" />
+      </xs:choice>
+      <xs:attribute name="wctpVersion" type="xs:string" use="required" />
+      <xs:attribute name="wctpToken" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientQuery">
+    <xs:complexType>
+      <xs:attribute name="senderID" type="xs:string" use="required" />
+      <xs:attribute name="recipientID" type="xs:string" use="required" />
+      <xs:attribute name="trackingNumber" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientQueryResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="wctp-ClientMessage" />
+        <xs:element ref="wctp-NoMessages" />
+        <xs:element ref="wctp-Failure" />
+      </xs:choice>
+      <xs:attribute name="minNextPollInterval" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientMessage">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-ClientMessageReply" />
+        <xs:element ref="wctp-ClientStatusInfo" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientMessageReply">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-ClientResponseHeader" />
+        <xs:element ref="wctp-Payload" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientStatusInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-ClientResponseHeader" />
+        <xs:choice>
+          <xs:element ref="wctp-Failure" />
+          <xs:element ref="wctp-Notification" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientResponseHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-Originator" />
+        <xs:element ref="wctp-Recipient" />
+      </xs:sequence>
+      <xs:attribute name="responseTimestamp" type="xs:string" />
+      <xs:attribute name="respondingToTimestamp" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Confirmation">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-Failure" />
+        <xs:element ref="wctp-Success" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Success">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="successCode" type="xs:string" use="required" />
+          <xs:attribute name="successText" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-LookupSubscriber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-Originator" />
+        <xs:element ref="wctp-LookupMessageControl" />
+        <xs:element ref="wctp-Recipient" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-LookupMessageControl">
+    <xs:complexType>
+      <xs:attribute name="messageID" type="xs:string" use="required" />
+      <xs:attribute name="transactionID" type="xs:string" />
+      <xs:attribute name="sendResponsesToID" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-LookupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-Originator" />
+        <xs:element ref="wctp-Recipient" />
+        <xs:choice>
+          <xs:element ref="wctp-LookupData" />
+          <xs:element ref="wctp-Failure" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="responseToMessageID" type="xs:string" use="required" />
+      <xs:attribute name="transactionID" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-LookupData">
+    <xs:complexType>
+      <xs:attribute name="maxMessageLength" type="xs:string" use="required" />
+      <xs:attribute name="mcrSupported">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="canRespond">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-MessageReply">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-ResponseHeader" />
+        <xs:element ref="wctp-Payload" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ResponseHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-Originator" />
+        <xs:element ref="wctp-MessageControl" />
+        <xs:element ref="wctp-Recipient" />
+      </xs:sequence>
+      <xs:attribute name="responseToMessageID" type="xs:string" use="required" />
+      <xs:attribute name="responseTimestamp" type="xs:string" />
+      <xs:attribute name="respondingToTimestamp" type="xs:string" />
+      <xs:attribute name="onBehalfOfRecipientID" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-PollForMessages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="wctp-MessageReceived" />
+      </xs:sequence>
+      <xs:attribute name="pollerID" type="xs:string" use="required" />
+      <xs:attribute name="securityCode" type="xs:string" />
+      <xs:attribute name="maxMessagesInBatch" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-MessageReceived">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-Failure" />
+        <xs:element ref="wctp-Success" />
+      </xs:choice>
+      <xs:attribute name="sequenceNo" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-PollResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="wctp-Message" />
+        <xs:element ref="wctp-Failure" />
+        <xs:element ref="wctp-NoMessages" />
+      </xs:choice>
+      <xs:attribute name="minNextPollInterval" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Message">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-SubmitRequest" />
+        <xs:element ref="wctp-MessageReply" />
+        <xs:element ref="wctp-StatusInfo" />
+        <xs:element ref="wctp-LookupResponse" />
+      </xs:choice>
+      <xs:attribute name="sequenceNo" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-NoMessages">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="wctp-StatusInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-ResponseHeader" />
+        <xs:choice>
+          <xs:element ref="wctp-Failure" />
+          <xs:element ref="wctp-Notification" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Failure">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="errorCode" type="xs:string" use="required" />
+          <xs:attribute name="errorText" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Notification">
+    <xs:complexType>
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="QUEUED" />
+            <xs:enumeration value="DELIVERED" />
+            <xs:enumeration value="READ" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-SubmitClientMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-SubmitClientHeader" />
+        <xs:element ref="wctp-Payload" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-SubmitClientHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-ClientOriginator" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="wctp-ClientMessageControl" />
+        <xs:element ref="wctp-Recipient" />
+      </xs:sequence>
+      <xs:attribute name="submitTimestamp" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientOriginator">
+    <xs:complexType>
+      <xs:attribute name="senderID" type="xs:string" use="required" />
+      <xs:attribute name="miscInfo" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientMessageControl">
+    <xs:complexType>
+      <xs:attribute name="sendResponsesToID" type="xs:string" />
+      <xs:attribute default="true" name="allowResponse">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenQueued">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenDelivered">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenRead">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="NORMAL" name="deliveryPriority">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="HIGH" />
+            <xs:enumeration value="NORMAL" />
+            <xs:enumeration value="LOW" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="deliveryAfter" type="xs:string" />
+      <xs:attribute name="deliveryBefore" type="xs:string" />
+      <xs:attribute default="false" name="preformatted">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="true" name="allowTruncation">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-SubmitClientResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-Failure" />
+        <xs:element ref="wctp-ClientSuccess" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ClientSuccess">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="successCode" type="xs:string" use="required" />
+          <xs:attribute name="successText" type="xs:string" />
+          <xs:attribute name="trackingNumber" type="xs:string" use="required" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-SubmitRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-SubmitHeader" />
+        <xs:element ref="wctp-Payload" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-SubmitHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-Originator" />
+        <xs:element ref="wctp-MessageControl" />
+        <xs:element ref="wctp-Recipient" />
+      </xs:sequence>
+      <xs:attribute name="submitTimestamp" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Originator">
+    <xs:complexType>
+      <xs:attribute name="senderID" type="xs:string" use="required" />
+      <xs:attribute name="securityCode" type="xs:string" />
+      <xs:attribute name="miscInfo" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-MessageControl">
+    <xs:complexType>
+      <xs:attribute name="messageID" type="xs:string" use="required" />
+      <xs:attribute name="transactionID" type="xs:string" />
+      <xs:attribute name="sendResponsesToID" type="xs:string" />
+      <xs:attribute default="true" name="allowResponse">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenQueued">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenDelivered">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="notifyWhenRead">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="NORMAL" name="deliveryPriority">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="HIGH" />
+            <xs:enumeration value="NORMAL" />
+            <xs:enumeration value="LOW" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="deliveryAfter" type="xs:string" />
+      <xs:attribute name="deliveryBefore" type="xs:string" />
+      <xs:attribute default="false" name="preformatted">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="true" name="allowTruncation">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Recipient">
+    <xs:complexType>
+      <xs:attribute name="recipientID" type="xs:string" use="required" />
+      <xs:attribute name="authorizationCode" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Payload">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="wctp-MCR" />
+        <xs:element ref="wctp-Alphanumeric" />
+        <xs:element ref="wctp-TransparentData" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-MCR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="wctp-MessageText" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="wctp-Choice" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-MessageText" type="xs:string" />
+  <xs:element name="wctp-Choice" type="xs:string" />
+  <xs:element name="wctp-VersionQuery">
+    <xs:complexType>
+      <xs:attribute name="inquirer" type="xs:string" use="required" />
+      <xs:attribute name="dateTime" type="xs:string" />
+      <xs:attribute default="no" name="listDTDs">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="no" name="listConfiguration">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-VersionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="wctp-ContactInfo" />
+        <xs:choice>
+          <xs:element ref="wctp-Failure" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" ref="wctp-DTDSupport" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="responder" type="xs:string" use="required" />
+      <xs:attribute name="dateTimeOfRsp" type="xs:string" />
+      <xs:attribute name="inquirer" type="xs:string" />
+      <xs:attribute name="dateTimeOfReq" type="xs:string" />
+      <xs:attribute name="invalidAfter" type="xs:string" />
+      <xs:attribute default="no" name="listDTDs">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="no" name="listConfiguration">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-ContactInfo">
+    <xs:complexType>
+      <xs:attribute name="email" type="xs:string" />
+      <xs:attribute name="phone" type="xs:string" />
+      <xs:attribute name="www" type="xs:string" />
+      <xs:attribute name="info" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-DTDSupport">
+    <xs:complexType>
+      <xs:attribute name="dtdName" type="xs:string" use="required" />
+      <xs:attribute name="verToken" type="xs:string" />
+      <xs:attribute default="Supported" name="supportType">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Supported" />
+            <xs:enumeration value="Deprecated" />
+            <xs:enumeration value="NotSupported" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="no" name="exceptions">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="supportUntil" type="xs:string" />
+      <xs:attribute name="replacement" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wctp-Alphanumeric" type="xs:string" />
+  <xs:element name="wctp-TransparentData">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute default="OPAQUE" name="type">
+            <xs:simpleType>
+              <xs:restriction base="xs:NMTOKEN">
+                <xs:enumeration value="OPAQUE" />
+                <xs:enumeration value="FLEXsuite" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute default="base64" name="encoding">
+            <xs:simpleType>
+              <xs:restriction base="xs:NMTOKEN">
+                <xs:enumeration value="standard" />
+                <xs:enumeration value="base64" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
