@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WCTPlib")]
 [assembly: AssemblyDescription("A .NET library for generating and parsing WCTP requests and responses as well as handling routing for a WCTP endpoint using a HttpHandler.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("WUSM")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WCTPlib")]
-[assembly: AssemblyCopyright("Copyright © WUSM 2015")]
+[assembly: AssemblyCopyright("Copyright © 2015 Aaron Papp")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
