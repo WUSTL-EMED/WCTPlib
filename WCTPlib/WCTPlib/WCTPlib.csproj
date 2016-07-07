@@ -33,6 +33,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseNuget|AnyCPU'">
+    <OutputPath>bin\ReleaseNuget\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -90,10 +99,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>del "$(SolutionDir)\$(ProjectName).*.nupkg"</PreBuildEvent>
+    <PreBuildEvent>if "$(ConfigurationName)" == "ReleaseNuget" CALL del "$(SolutionDir)\$(ProjectName).*.nupkg"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)" == "Release" CALL nuget pack "$(ProjectPath)" -Symbols -Properties Configuration="$(ConfigurationName)" -outputdirectory "$(SolutionDir)\"</PostBuildEvent>
+    <PostBuildEvent>if "$(ConfigurationName)" == "ReleaseNuget" CALL nuget pack "$(ProjectPath)" -Symbols -Properties Configuration="$(ConfigurationName)" -outputdirectory "$(SolutionDir)\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
