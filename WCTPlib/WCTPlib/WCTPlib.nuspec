@@ -1,30 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-    <metadata>
-        <id>$id$</id>
-        <version>$version$</version>
-        <title>$id$</title>
-        <authors>Aaron Papp</authors>
-        <owners>$author$</owners>
-        <licenseUrl>https://github.com/PCFDev/WCTPlib/blob/master/LICENSE.md</licenseUrl>
-        <projectUrl>https://github.com/PCFDev/WCTPlib</projectUrl>
-        <iconUrl>https://avatars0.githubusercontent.com/u/10945804?s=128</iconUrl>
-        <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>$description$</description>
-        <copyright>Copyright © 2015 Aaron Papp</copyright>
-        <language>en-US</language>
-        <tags>wctp</tags>
-        <frameworkAssemblies>
-            <frameworkAssembly assemblyName="Microsoft.CSharp" />
-            <frameworkAssembly assemblyName="System" />
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" />
-            <frameworkAssembly assemblyName="System.Core" />
-            <frameworkAssembly assemblyName="System.Data" />
-            <frameworkAssembly assemblyName="System.Data.DataSetExtensions" />
-            <frameworkAssembly assemblyName="System.Net.Http" />
-            <frameworkAssembly assemblyName="System.Web" />
-            <frameworkAssembly assemblyName="System.Xml" />
-            <frameworkAssembly assemblyName="System.Xml.Linq" />
-        </frameworkAssemblies>
-    </metadata>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$id$</title>
+    <authors>Aaron Papp</authors>
+    <owners>Aaron Papp</owners>
+    <licenseUrl>https://github.com/PCFDev/WCTPlib/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/PCFDev/WCTPlib</projectUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/10945804?s=128</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright © 2015 Aaron Papp</copyright>
+    <language>en-US</language>
+    <tags>wctp</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" />
+      <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" />
+      <frameworkAssembly assemblyName="System.Core" />
+      <frameworkAssembly assemblyName="System.Data" />
+      <frameworkAssembly assemblyName="System.Data.DataSetExtensions" />
+      <frameworkAssembly assemblyName="System.Net.Http" />
+      <frameworkAssembly assemblyName="System.Web" />
+      <frameworkAssembly assemblyName="System.Xml" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" />
+    </frameworkAssemblies>
+  </metadata>
 </package>

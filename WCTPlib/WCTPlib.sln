@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCTPlib", "WCTPlib\WCTPlib.csproj", "{64AA4622-1FB8-400E-95D5-EBCA1E787D5D}"
 EndProject
@@ -10,21 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCTPlib.Tests", "WCTPlib.Tests\WCTPlib.Tests.csproj", "{31F99D2D-33FD-4B73-AF83-C63949AD42E9}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://pcf.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WCTPHost\\WCTPHost.csproj
-		SccProjectName1 = WCTPHost
-		SccLocalPath1 = WCTPHost
-		SccProjectUniqueName2 = WCTPlib.Tests\\WCTPlib.Tests.csproj
-		SccProjectName2 = WCTPlib.Tests
-		SccLocalPath2 = WCTPlib.Tests
-		SccProjectUniqueName3 = WCTPlib\\WCTPlib.csproj
-		SccProjectName3 = WCTPlib
-		SccLocalPath3 = WCTPlib
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
