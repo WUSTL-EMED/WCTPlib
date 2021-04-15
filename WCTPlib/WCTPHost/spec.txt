@@ -1,0 +1,49 @@
+﻿http communication (POST)
+content type: text/xml
+xml request/response
+
+address identifier
+	[entity-address@]transport-address
+	The character set for both transport- and entity-address portions must conform with RFC 2396, section 2 URI Characters.
+		https://www.ietf.org/rfc/rfc2396.txt 
+
+transport address
+	[Protocol:[//]]Domain[:Port][/Path] 
+
+
+
+
+
+
+
+
+
+
+sample request
+
+<?xml version="1.0"?>
+<!DOCTYPE wctp-Operation SYSTEM "http://wctp.myairmail.com/wctp-dtd-v1r1.dtd">
+<wctp-Operation wctpVersion="wctp-dtd-v1r1">
+   <wctp-SubmitClientMessage>
+      <wctp-SubmitClientHeader submitTimestamp="2003-11-14T04:30:53">
+         <wctp-ClientOriginator senderID="betauser" miscInfo="betapassword"/>
+         <wctp-ClientMessageControl notifyWhenDelivered="true" allowResponse="true"/>
+         <wctp-Recipient recipientID="2148169898"/>
+      </wctp-SubmitClientHeader>
+      <wctp-Payload>
+         <wctp-Alphanumeric>
+            This is a test
+         </wctp-Alphanumeric>
+      </wctp-Payload>
+   </wctp-SubmitClientMessage> 
+</wctp-Operation>
+
+sample response
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wctp-Operation SYSTEM "http://wctp.myairmail.com/wctp-dtd-v1r1.dtd">
+<wctp-Operation wctpVersion="wctp-dtd-v1r1.dtd" wctpToken="x224">
+   <wctp-SubmitClientResponse>
+      <wctp-ClientSuccess successText="Message Accepted" successCode="200" trackingNumber="1784193744"/>
+   </wctp-SubmitClientResponse>
+</wctp-Operation>
